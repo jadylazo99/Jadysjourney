@@ -1,0 +1,9 @@
+{
+  "name": "JadysJourney",
+  "short_name": "JadysJourney",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff3f6",
+  "theme_color": "#e55d7f",
+  "icons": []
+}

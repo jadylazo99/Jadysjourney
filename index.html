@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#e55d7f" />
+  <title>JadysJourney</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">The New Normal</p>
+      <h1>JadysJourney</h1>
+      <p class="tagline">One workout. One meal. One promise kept to yourself.</p>
+    </div>
+    <button id="installBtn" class="ghost hidden">Install App</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="dashboard">Dashboard</button>
+    <button class="tab" data-tab="workout">Workout</button>
+    <button class="tab" data-tab="food">Food</button>
+    <button class="tab" data-tab="progress">Progress</button>
+    <button class="tab" data-tab="settings">Settings</button>
+  </nav>
+
+  <main>
+    <section id="dashboard" class="screen active">
+      <div class="hero-card">
+        <div>
+          <p id="todayDate" class="date"></p>
+          <h2 id="greeting">Good Morning, Jady ☀️</h2>
+          <p id="todayWorkoutName"></p>
+        </div>
+        <div class="streak">🔥 <span id="streakCount">0</span><small>day streak</small></div>
+      </div>
+
+      <div class="rings">
+        <div class="ring-card">
+          <div class="ring" id="waterRing"><span id="waterText">0/120</span></div>
+          <h3>Water oz</h3>
+          <button onclick="addWater(20)">+20 oz</button>
+        </div>
+        <div class="ring-card">
+          <div class="ring gold" id="proteinRing"><span id="proteinText">0/160</span></div>
+          <h3>Protein g</h3>
+          <button onclick="addProtein(20)">+20g</button>
+        </div>
+        <div class="ring-card">
+          <div class="ring black" id="habitRing"><span id="habitText">0%</span></div>
+          <h3>Habits</h3>
+          <button onclick="saveToday()">Save</button>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h2>Daily Check-In</h2>
+          <input id="weight" type="number" placeholder="Today's weight" />
+          <input id="calories" type="number" placeholder="Calories eaten" />
+          <input id="steps" type="number" placeholder="Steps" />
+          <textarea id="note" placeholder="Today's win or note..."></textarea>
+          <button onclick="saveToday()">Save Today</button>
+        </div>
+
+        <div class="card">
+          <h2>Today's Important Checklist</h2>
+          <div id="dailyHabits"></div>
+          <div class="add-row">
+            <input id="customHabitText" placeholder="Add custom task..." />
+            <button onclick="addCustomHabit()">Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Weekend Choice</h2>
+        <p class="small">Choose which weekend day is rest and which is short workout. The app will change the plan automatically.</p>
+        <label class="choice"><input type="radio" name="weekendMode" value="satWorkout"> Saturday short workout / Sunday rest + reset</label>
+        <label class="choice"><input type="radio" name="weekendMode" value="sunWorkout"> Saturday rest + reset / Sunday short workout</label>
+      </div>
+    </section>
+
+    <section id="workout" class="screen">
+      <div class="card">
+        <h2>Today's Workout</h2>
+        <h3 id="workoutTitle"></h3>
+        <div id="workoutList"></div>
+        <button onclick="completeWorkout()">Complete Workout ✅</button>
+      </div>
+      <div class="card">
+        <h2>Full Week</h2>
+        <div id="weekGrid" class="week-grid"></div>
+      </div>
+    </section>
+
+    <section id="food" class="screen">
+      <div class="card">
+        <h2>Food Library</h2>
+        <p class="small">Foods you actually like. No Greek yogurt, oatmeal, cottage cheese, protein bars, sour cream, or English muffins.</p>
+      </div>
+      <div id="foodLibrary" class="food-grid"></div>
+    </section>
+
+    <section id="progress" class="screen">
+      <div class="grid two">
+        <div class="card">
+          <h2>Past Days</h2>
+          <div id="history"></div>
+        </div>
+        <div class="card">
+          <h2>Stats</h2>
+          <p><b>Saved days:</b> <span id="savedDays">0</span></p>
+          <p><b>Current streak:</b> <span id="streakStats">0</span> days</p>
+          <p><b>Lowest logged weight:</b> <span id="lowestWeight">—</span></p>
+          <p><b>Latest weight:</b> <span id="latestWeight">—</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="settings" class="screen">
+      <div class="card">
+        <h2>Settings</h2>
+        <label>Water Goal <input id="waterGoal" type="number" /></label>
+        <label>Protein Goal <input id="proteinGoal" type="number" /></label>
+        <label>Calorie Goal <input id="calorieGoal" type="number" /></label>
+        <button onclick="saveSettings()">Save Settings</button>
+      </div>
+      <div class="card danger">
+        <h2>Reset Data</h2>
+        <p>This clears all saved app data on this device/browser.</p>
+        <button onclick="clearAll()">Clear Everything</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>JadysJourney ♥ Consistency beats perfection.</footer>
+  <script src="app.js"></script>
+</body>
+</html>
