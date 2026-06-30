@@ -19,11 +19,14 @@
   </header>
 
   <nav class="tabs">
-    <button class="tab active" data-tab="dashboard">Dashboard</button>
-    <button class="tab" data-tab="workout">Workout</button>
-    <button class="tab" data-tab="food">Food</button>
-    <button class="tab" data-tab="progress">Progress</button>
-    <button class="tab" data-tab="settings">Settings</button>
+    <button class="tab active" data-tab="dashboard">🏠 Dashboard</button>
+    <button class="tab" data-tab="workout">🏋️ Workout</button>
+    <button class="tab" data-tab="food">🍗 Food</button>
+    <button class="tab" data-tab="calendar">📅 Calendar</button>
+    <button class="tab" data-tab="progress">📈 Progress</button>
+    <button class="tab" data-tab="bruno">🐶 Bruno</button>
+    <button class="tab" data-tab="vacation">✈️ Vacation</button>
+    <button class="tab" data-tab="settings">⚙️ Settings</button>
   </nav>
 
   <main>
@@ -38,27 +41,15 @@
       </div>
 
       <div class="rings">
-        <div class="ring-card">
-          <div class="ring" id="waterRing"><span id="waterText">0/120</span></div>
-          <h3>Water oz</h3>
-          <button onclick="addWater(20)">+20 oz</button>
-        </div>
-        <div class="ring-card">
-          <div class="ring gold" id="proteinRing"><span id="proteinText">0/160</span></div>
-          <h3>Protein g</h3>
-          <button onclick="addProtein(20)">+20g</button>
-        </div>
-        <div class="ring-card">
-          <div class="ring black" id="habitRing"><span id="habitText">0%</span></div>
-          <h3>Habits</h3>
-          <button onclick="saveToday()">Save</button>
-        </div>
+        <div class="ring-card"><div class="ring" id="waterRing"><span id="waterText">0/120</span></div><h3>Water oz</h3><button onclick="addWater(20)">+20 oz</button></div>
+        <div class="ring-card"><div class="ring gold" id="proteinRing"><span id="proteinText">0/160</span></div><h3>Protein g</h3><button onclick="addProtein(20)">+20g</button></div>
+        <div class="ring-card"><div class="ring black" id="habitRing"><span id="habitText">0%</span></div><h3>Habits</h3><button onclick="saveToday()">Save</button></div>
       </div>
 
       <div class="grid two">
         <div class="card">
           <h2>Daily Check-In</h2>
-          <input id="weight" type="number" placeholder="Today's weight" />
+          <input id="weight" type="number" step="0.1" placeholder="Today's weight" />
           <input id="calories" type="number" placeholder="Calories eaten" />
           <input id="steps" type="number" placeholder="Steps" />
           <textarea id="note" placeholder="Today's win or note..."></textarea>
@@ -75,11 +66,15 @@
         </div>
       </div>
 
-      <div class="card">
-        <h2>Weekend Choice</h2>
-        <p class="small">Choose which weekend day is rest and which is short workout. The app will change the plan automatically.</p>
-        <label class="choice"><input type="radio" name="weekendMode" value="satWorkout"> Saturday short workout / Sunday rest + reset</label>
-        <label class="choice"><input type="radio" name="weekendMode" value="sunWorkout"> Saturday rest + reset / Sunday short workout</label>
+      <div class="grid two">
+        <div class="card">
+          <h2>AI Coach Style Recap</h2>
+          <p id="coachMessage"></p>
+        </div>
+        <div class="card">
+          <h2>Achievements</h2>
+          <div id="achievements"></div>
+        </div>
       </div>
     </section>
 
@@ -98,17 +93,47 @@
 
     <section id="food" class="screen">
       <div class="card">
-        <h2>Food Library</h2>
-        <p class="small">Foods you actually like. No Greek yogurt, oatmeal, cottage cheese, protein bars, sour cream, or English muffins.</p>
+        <h2>Meal Picker</h2>
+        <p class="small">Tap for a no-thinking meal day using only foods you like.</p>
+        <button onclick="pickMeals()">Pick My Meals</button>
+        <div id="mealPick" class="meal-pick"></div>
       </div>
+
+      <div class="card">
+        <h2>Sunday Meal Prep Generator</h2>
+        <select id="mealPrepChoice">
+          <option>Lemon pepper chicken + white rice</option>
+          <option>Teriyaki chicken + white rice</option>
+          <option>Cajun chicken + white rice</option>
+          <option>Garlic parmesan chicken + white rice</option>
+          <option>Honey garlic chicken + white rice</option>
+          <option>BBQ chicken + white rice</option>
+          <option>Buffalo chicken + white rice</option>
+        </select>
+        <button onclick="makeGroceryList()">Make Grocery List</button>
+        <div id="groceryList"></div>
+      </div>
+
       <div id="foodLibrary" class="food-grid"></div>
+    </section>
+
+    <section id="calendar" class="screen">
+      <div class="card">
+        <h2>Monthly Calendar</h2>
+        <p class="small">Green = you kept at least one promise that day. Tap a day to view details.</p>
+        <div id="calendarGrid" class="calendar-grid"></div>
+      </div>
+      <div class="card">
+        <h2>Selected Day</h2>
+        <div id="selectedDay"></div>
+      </div>
     </section>
 
     <section id="progress" class="screen">
       <div class="grid two">
         <div class="card">
-          <h2>Past Days</h2>
-          <div id="history"></div>
+          <h2>Weight Trend</h2>
+          <canvas id="weightChart" width="500" height="260"></canvas>
         </div>
         <div class="card">
           <h2>Stats</h2>
@@ -116,7 +141,51 @@
           <p><b>Current streak:</b> <span id="streakStats">0</span> days</p>
           <p><b>Lowest logged weight:</b> <span id="lowestWeight">—</span></p>
           <p><b>Latest weight:</b> <span id="latestWeight">—</span></p>
+          <p><b>Total workouts:</b> <span id="totalWorkouts">0</span></p>
         </div>
+      </div>
+      <div class="card">
+        <h2>Past Days</h2>
+        <div id="history"></div>
+      </div>
+    </section>
+
+    <section id="bruno" class="screen">
+      <div class="grid two">
+        <div class="card">
+          <h2>Bruno Daily</h2>
+          <label><input type="checkbox" data-bruno="morningWalk"> Morning walk</label>
+          <label><input type="checkbox" data-bruno="eveningPlay"> Evening play</label>
+          <label><input type="checkbox" data-bruno="training"> Training practice</label>
+          <label><input type="checkbox" data-bruno="park"> Park / long walk</label>
+          <textarea id="brunoNote" placeholder="Bruno note..."></textarea>
+          <button onclick="saveBruno()">Save Bruno</button>
+        </div>
+        <div class="card">
+          <h2>Bruno Log</h2>
+          <div id="brunoHistory"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vacation" class="screen">
+      <div class="card">
+        <h2>Vacation Mode</h2>
+        <p class="small">For Europe: no guilt, no gym pressure. The goal is walking, protein first, hydration, and coming back to routine.</p>
+        <label><input type="checkbox" id="vacationMode"> Turn on vacation mode</label>
+        <input id="vacationStart" type="date" />
+        <input id="vacationEnd" type="date" />
+        <button onclick="saveVacation()">Save Vacation Mode</button>
+      </div>
+      <div class="card">
+        <h2>Vacation Goals</h2>
+        <ul>
+          <li>12,000+ steps when exploring</li>
+          <li>Protein first at meals</li>
+          <li>Water every day</li>
+          <li>Enjoy dessert without guilt</li>
+          <li>Return to normal immediately after trip</li>
+        </ul>
       </div>
     </section>
 
@@ -126,8 +195,21 @@
         <label>Water Goal <input id="waterGoal" type="number" /></label>
         <label>Protein Goal <input id="proteinGoal" type="number" /></label>
         <label>Calorie Goal <input id="calorieGoal" type="number" /></label>
+
+        <h2>Weekend Choice</h2>
+        <label class="choice"><input type="radio" name="weekendMode" value="satWorkout"> Saturday short workout / Sunday rest + reset</label>
+        <label class="choice"><input type="radio" name="weekendMode" value="sunWorkout"> Saturday rest + reset / Sunday short workout</label>
+
         <button onclick="saveSettings()">Save Settings</button>
       </div>
+
+      <div class="card">
+        <h2>Backup / Restore</h2>
+        <button onclick="downloadBackup()">Download Backup</button>
+        <input type="file" id="restoreFile" accept=".json" />
+        <button onclick="restoreBackup()">Restore Backup</button>
+      </div>
+
       <div class="card danger">
         <h2>Reset Data</h2>
         <p>This clears all saved app data on this device/browser.</p>
